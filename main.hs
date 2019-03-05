@@ -1,6 +1,9 @@
 import Text.Yoda
 import Data.Char (isAlpha, isDigit, isSeparator)
 
+data TypeExpr = Func TypeExpr TypeExpr
+              | TypeInt Int
+
 data Expr = Lambda String Expr
           | App Expr Expr
           | Symbol String
