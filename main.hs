@@ -43,6 +43,7 @@ eval_expr (N n) env =
 my_env :: String -> Expr
 my_env "jordan" = (Lambda "x" (Symbol "x"))
 my_env "succ" = (NativeFunction (\(N x) -> N (x + 1)))
+my_env "add" = (NativeFunction (\(N x) -> NativeFunction (\(N y) -> N (x + y))))
 
 identifier :: Parser String
 identifier = some (satisfy isAlpha)
@@ -57,10 +58,11 @@ optional_whitespace =
 
 parse_expr :: Parser Expr
 parse_expr =
-    Lambda <$ string "(lambda" <* whitespace <* string "(" <*> identifier <* string ")" <* whitespace <*> parse_expr <* string ")"
+    Lambda <$ string "(" <*> identifier <* whitespace <* string "->" <* whitespace <*> parse_expr <* string ")"
     <|> App <$ string "(" <* (many (satisfy isSeparator)) <*> parse_expr <* whitespace <*> parse_expr <* optional_whitespace <* string ")"
     <|> Symbol <$> identifier
     <|> (N . read) <$> some (satisfy isDigit)
+    <|> (\var x expr -> App (Lambda var expr) x) <$ string "let" <* whitespace <*> identifier <* optional_whitespace <* string "=" <* optional_whitespace <*> parse_expr <* whitespace <* string "in" <* whitespace <*> parse_expr
 
 main :: IO ()
 main = print "hello"
