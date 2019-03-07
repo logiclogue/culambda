@@ -1,22 +1,7 @@
-import Text.Yoda
-import Data.Char (isAlpha, isDigit, isSeparator)
+import Expr (Expr (..))
 
 data TypeExpr = Func TypeExpr TypeExpr
               | TypeInt Int
-
-data Expr = Lambda String Expr
-          | App Expr Expr
-          | Symbol String
-          | NativeFunction (Expr -> Expr)
-          | N Int
-
-instance Show Expr where
-
-    show (Lambda s expr) = "(lambda (" ++ s ++ ") " ++ (show expr) ++ ")"
-    show (App expr_a expr_b) = "(" ++ (show expr_a) ++ " " ++ (show expr_b) ++ ")"
-    show (Symbol s) = s
-    show (NativeFunction _) = "<native function>"
-    show (N n) = show n
 
 eval_expr :: Expr -> (String -> Expr) -> Expr
 eval_expr (App (Lambda var expr_a) expr_b) env =
@@ -40,29 +25,13 @@ eval_expr (Symbol s) env =
 eval_expr (N n) env =
     N n
 
-my_env :: String -> Expr
-my_env "jordan" = (Lambda "x" (Symbol "x"))
-my_env "succ" = (NativeFunction (\(N x) -> N (x + 1)))
-my_env "add" = (NativeFunction (\(N x) -> NativeFunction (\(N y) -> N (x + y))))
-
-identifier :: Parser String
-identifier = some (satisfy isAlpha)
-
-whitespace :: Parser String
-whitespace =
-    some (satisfy isSeparator)
-
-optional_whitespace :: Parser String
-optional_whitespace =
-    many (satisfy isSeparator)
-
-parse_expr :: Parser Expr
-parse_expr =
-    Lambda <$ string "(" <*> identifier <* whitespace <* string "->" <* whitespace <*> parse_expr <* string ")"
-    <|> App <$ string "(" <* (many (satisfy isSeparator)) <*> parse_expr <* whitespace <*> parse_expr <* optional_whitespace <* string ")"
-    <|> Symbol <$> identifier
-    <|> (N . read) <$> some (satisfy isDigit)
-    <|> (\var x expr -> App (Lambda var expr) x) <$ string "let" <* whitespace <*> identifier <* optional_whitespace <* string "=" <* optional_whitespace <*> parse_expr <* whitespace <* string "in" <* whitespace <*> parse_expr
+my_prelude :: String -> Expr
+my_prelude "jordan" = (Lambda "x" (Symbol "x"))
+my_prelude "succ" = (NativeFunction (\(N x) -> N (x + 1)))
+my_prelude "add" = (NativeFunction (\(N x) -> NativeFunction (\(N y) -> N (x + y))))
 
 main :: IO ()
-main = print "hello"
+main = do
+    input <- getLine
+
+    print input
