@@ -52,5 +52,5 @@ expr_parser =
     <|> number_parser
     <|> let_parser
 
-parse_expr :: String -> Expr
-parse_expr = last . map fst . parse expr_parser
+parse_expr :: String -> Maybe Expr
+parse_expr = (fst <$>) . find (\(_, s) -> length s == 0) . parse expr_parser
