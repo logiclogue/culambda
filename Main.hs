@@ -12,8 +12,8 @@ my_prelude "add" = (NativeFunction (\(N x) -> NativeFunction (\(N y) -> N (x + y
 
 main :: IO ()
 main = do
-    input <- getLine
+    input <- getContents
 
     case parse_expr input of
         Just x  -> (print . flip eval_expr my_prelude) x
-        Nothing -> print ("failed to parse after: " ++ input)
+        Nothing -> print ("Failed to parse after: " ++ input)

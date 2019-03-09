@@ -2,7 +2,7 @@ module Parser where
 
 import Text.Yoda
 import Expr
-import Data.Char (isAlpha, isDigit, isSeparator)
+import Data.Char (isAlpha, isDigit, isSpace)
 import Data.List (find)
 
 identifier :: Parser String
@@ -11,11 +11,11 @@ identifier =
 
 whitespace :: Parser String
 whitespace =
-    some (satisfy isSeparator)
+    some (satisfy isSpace)
 
 optional_whitespace :: Parser String
 optional_whitespace =
-    many (satisfy isSeparator)
+    many (satisfy isSpace)
 
 lambda_parser :: Parser Expr
 lambda_parser =
@@ -26,7 +26,7 @@ lambda_parser =
 app_parser :: Parser Expr
 app_parser =
     App
-        <$ string "(" <* (many (satisfy isSeparator)) <*> expr_parser
+        <$ string "(" <* (many (satisfy isSpace)) <*> expr_parser
         <* whitespace <*> expr_parser <* optional_whitespace <* string ")"
 
 symbol_parser :: Parser Expr
@@ -46,11 +46,11 @@ let_parser =
 
 expr_parser :: Parser Expr
 expr_parser =
-    lambda_parser
-    <|> app_parser
-    <|> symbol_parser
-    <|> number_parser
-    <|> let_parser
+    (lambda_parser
+        <|> app_parser
+        <|> symbol_parser
+        <|> number_parser
+        <|> let_parser) <* optional_whitespace
 
 parse_expr :: String -> Maybe Expr
 parse_expr = (fst <$>) . find (\(_, s) -> length s == 0) . parse expr_parser
