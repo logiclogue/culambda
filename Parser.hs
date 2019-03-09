@@ -4,6 +4,7 @@ import Text.Yoda
 import Expr
 import Data.Char (isAlpha, isDigit, isSpace)
 import Data.List (find)
+import TypeChecker (expr_type)
 
 identifier :: Parser String
 identifier =
