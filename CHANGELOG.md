@@ -1,4 +1,4 @@
-# Revision history for haskell-lisp-minimal
+# Revision history for culambda
 
 ## 0.1.0.0 -- YYYY-mm-dd
 
