@@ -1,6 +1,13 @@
-# Lisp
+```
+   ______      __                __        __     
+  / ____/_  __/ /___ _____ ___  / /_  ____/ /___ _
+ / /   / / / / / __ `/ __ `__ \/ __ \/ __  / __ `/
+/ /___/ /_/ / / /_/ / / / / / / /_/ / /_/ / /_/ / 
+\____/\__,_/_/\__,_/_/ /_/ /_/_.___/\__,_/\__,_/  
+                                                  
+```
 
-Lisp-like programming language implemented in Haskell.
+Culambda is a Lisp-like programming language implemented in Haskell.
 
 ## Semantics
 
