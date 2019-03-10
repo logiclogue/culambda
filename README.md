@@ -65,6 +65,8 @@ Function application:
 (f x) : return type of f
 ```
 
+How to evaluate the `forall a. a` case? It's a special type of type. **TODO**
+
 ## Type Checker
 
 Symbols:
