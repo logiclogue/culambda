@@ -8,6 +8,10 @@ data PolyType
     = PolyTypeMono MonoType
     | PolyTypeForAll String PolyType
 
+data TypeContext
+    = TypeContextEmpty
+    | TypeContextAssign Expr PolyType
+
 data Type
     = Number
     | Function (Type, Type)
