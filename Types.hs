@@ -10,7 +10,9 @@ data PolyType
 
 data TypeContext
     = TypeContextEmpty
-    | TypeContextAssign Expr PolyType
+    | TypeContextAssign String PolyType
+
+data Typing = Typing Expr PolyType
 
 data Type
     = Number
